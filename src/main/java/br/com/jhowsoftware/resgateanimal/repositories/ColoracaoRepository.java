@@ -2,7 +2,9 @@ package br.com.jhowsoftware.resgateanimal.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ColoracaoRepository extends JpaRepository<ColoracaoRepository,Long>
+import br.com.jhowsoftware.resgateanimal.entities.Coloracao;
+
+public interface ColoracaoRepository extends JpaRepository<Coloracao,Long>
 {
 
 }
