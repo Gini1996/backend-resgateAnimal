@@ -2,7 +2,9 @@ package br.com.jhowsoftware.resgateanimal.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PorteRepository extends JpaRepository<PorteRepository, Long>
+import br.com.jhowsoftware.resgateanimal.entities.Porte;
+
+public interface PorteRepository extends JpaRepository<Porte, Long>
 {
 
 }
