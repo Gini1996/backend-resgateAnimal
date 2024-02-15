@@ -20,10 +20,10 @@ CREATE TABLE IF NOT EXISTS Usuario
 	FOREIGN KEY (idTipoUsuario) REFERENCES TipoUsuario (idTipoUsuario)
 );
 
-CREATE TABLE IF NOT EXISTS TipoDenuncia
+CREATE TABLE IF NOT EXISTS Tipo_Denuncia
 ( 
-	idTipoDenuncia INTEGER,
-	tipoDenuncia VARCHAR(255) NOT NULL,
+	idTipoDenuncia SERIAL,
+	tipo_denuncia VARCHAR(255) NOT NULL,
 	PRIMARY KEY (idTipoDenuncia)
 );
 
