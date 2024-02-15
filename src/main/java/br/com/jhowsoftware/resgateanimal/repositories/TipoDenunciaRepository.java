@@ -6,5 +6,5 @@ import br.com.jhowsoftware.resgateanimal.entities.TipoDenuncia;
 
 public interface TipoDenunciaRepository extends JpaRepository<TipoDenuncia, Long>
 {
-
+	boolean existsByTipoDenuncia(String tipoDenuncia);
 }

@@ -15,6 +15,7 @@ public class TipoDenuncia
 {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@Column(name = "idtipodenuncia")
 	private Long idTipoDenuncia;
 	
 	@Column(columnDefinition = "TEXT")
