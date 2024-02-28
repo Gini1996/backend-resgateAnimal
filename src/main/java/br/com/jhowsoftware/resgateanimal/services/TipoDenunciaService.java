@@ -1,10 +1,13 @@
 package br.com.jhowsoftware.resgateanimal.services;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.jhowsoftware.resgateanimal.dtos.TipoDenunciaDTO;
 import br.com.jhowsoftware.resgateanimal.entities.TipoDenuncia;
 import br.com.jhowsoftware.resgateanimal.exceptions.RegistroDuplicadoException;
 import br.com.jhowsoftware.resgateanimal.repositories.TipoDenunciaRepository;
@@ -15,6 +18,15 @@ public class TipoDenunciaService extends ServiceUtils
 {
 	@Autowired
 	private TipoDenunciaRepository tipoDenunciaRepository;
+	
+	@Transactional(readOnly = true)
+	public List<TipoDenunciaDTO> findAll()
+	{
+		List<TipoDenuncia> resultTpDenuncia = tipoDenunciaRepository.findAll();
+		List<TipoDenunciaDTO> dtoTpDenuncia = resultTpDenuncia.stream().map(x -> new TipoDenunciaDTO(x)).toList();
+		
+		return dtoTpDenuncia;
+	}
 	
 	@Transactional
 	public void addTpDenuncia(String tpDenuncia)
