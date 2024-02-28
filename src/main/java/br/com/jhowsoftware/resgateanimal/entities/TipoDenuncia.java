@@ -10,12 +10,12 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "TipoDenuncia")
+@Table(name = "tipo_denuncia")
 public class TipoDenuncia 
 {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	@Column(name = "idtipodenuncia")
+	@Column(name = "id_tipo_denuncia")
 	private Long idTipoDenuncia;
 	
 	@Column(columnDefinition = "TEXT")

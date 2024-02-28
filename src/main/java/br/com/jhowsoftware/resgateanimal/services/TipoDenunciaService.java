@@ -8,9 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.jhowsoftware.resgateanimal.entities.TipoDenuncia;
 import br.com.jhowsoftware.resgateanimal.exceptions.RegistroDuplicadoException;
 import br.com.jhowsoftware.resgateanimal.repositories.TipoDenunciaRepository;
+import br.com.jhowsoftware.resgateanimal.utils.ServiceUtils;
 
 @Service
-public class TipoDenunciaService 
+public class TipoDenunciaService extends ServiceUtils
 {
 	@Autowired
 	private TipoDenunciaRepository tipoDenunciaRepository;
@@ -18,6 +19,8 @@ public class TipoDenunciaService
 	@Transactional
 	public void addTpDenuncia(String tpDenuncia)
 	{ 
+		validaString(tpDenuncia);
+		
 		if (tipoDenunciaRepository.existsByTipoDenuncia(tpDenuncia)) 
 			throw new RegistroDuplicadoException("O tipo de denuncia: " + tpDenuncia + " já se encontra cadastrado no banco de dados");
 			
