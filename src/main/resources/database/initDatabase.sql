@@ -20,11 +20,11 @@ CREATE TABLE IF NOT EXISTS Usuario
 	FOREIGN KEY (idTipoUsuario) REFERENCES TipoUsuario (idTipoUsuario)
 );
 
-CREATE TABLE IF NOT EXISTS Tipo_Denuncia
+CREATE TABLE IF NOT EXISTS tipo_denuncia
 ( 
-	idTipoDenuncia SERIAL,
+	id_tipo_denuncia SERIAL,
 	tipo_denuncia VARCHAR(255) NOT NULL,
-	PRIMARY KEY (idTipoDenuncia)
+	PRIMARY KEY (id_tipo_denuncia)
 );
 
 CREATE TABLE IF NOT EXISTS TipoAnimal
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS Denuncia
 	idCondicao INTEGER,
 	PRIMARY KEY (idDenuncia),
 	FOREIGN KEY (idUsuario) REFERENCES Usuario (idUsuario),
-	FOREIGN KEY (idTipoDenuncia) REFERENCES TipoDenuncia (idTipoDenuncia),
+	FOREIGN KEY (idTipoDenuncia) REFERENCES tipo_denuncia (id_tipo_denuncia),
 	FOREIGN KEY (idPelo) REFERENCES Pelo (idPelo),
 	FOREIGN KEY (idColoracao) REFERENCES Coloracao (idColoracao),
 	FOREIGN KEY (idTipoAnimal) REFERENCES TipoAnimal (idTipoAnimal),

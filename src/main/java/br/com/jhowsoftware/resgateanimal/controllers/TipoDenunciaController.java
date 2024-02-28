@@ -21,15 +21,7 @@ public class TipoDenunciaController
 	@PostMapping("/addTpDenuncia")
 	public ResponseEntity<String> addTpDenuncia(@RequestBody TipoDenunciaDTO body)
 	{
-		try 
-		{
-			Integer tipoDenunciaInt = Integer.parseInt(body.getTipoDenuncia());
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O valor " + tipoDenunciaInt + " é um numero, favor informar um texto valido");
-		}
-		catch(NumberFormatException e)
-		{
-			tipoDenunciaService.addTpDenuncia(body.getTipoDenuncia());
-			return ResponseEntity.status(HttpStatus.OK).body("Tipo de denúncia cadastrado com sucesso.");   
-		}
+		tipoDenunciaService.addTpDenuncia(body.getTipoDenuncia());
+		return ResponseEntity.status(HttpStatus.OK).body("Tipo de denúncia cadastrado com sucesso.");   
 	}
 }
