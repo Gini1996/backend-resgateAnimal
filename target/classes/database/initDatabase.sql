@@ -1,107 +1,107 @@
-CREATE TABLE IF NOT EXISTS TipoUsuario
+CREATE TABLE IF NOT EXISTS tipo_usuario
 ( 
-	idTipoUsuario INTEGER,
-	tipoUsuario VARCHAR(255) NOT NULL,
-	PRIMARY KEY (idTipoUsuario)
+	id_tipo_usuario INTEGER,
+	tipo_usuario VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id_tipo_usuario)
 );
 
-CREATE TABLE IF NOT EXISTS Usuario
+CREATE TABLE IF NOT EXISTS usuario
 ( 
-	idUsuario INTEGER,
+	id_usuario INTEGER,
 	usuario VARCHAR(255) NOT NULL,
 	senha VARCHAR(255) NOT NULL,
 	nome VARCHAR(255),
 	cpf VARCHAR(20) NOT NULL,
 	telefone INTEGER,
-	dataNascimento DATE,
+	data_nascimento DATE,
 	email VARCHAR(255) NOT NULL,
-	idTipoUsuario INTEGER,
-	PRIMARY KEY (idUsuario),
-	FOREIGN KEY (idTipoUsuario) REFERENCES TipoUsuario (idTipoUsuario)
+	id_tipo_usuario INTEGER,
+	PRIMARY KEY (id_usuario),
+	FOREIGN KEY (id_tipo_usuario) REFERENCES tipo_usuario (id_tipo_usuario)
 );
 
-CREATE TABLE IF NOT EXISTS Tipo_Denuncia
+CREATE TABLE IF NOT EXISTS tipo_denuncia
 ( 
-	idTipoDenuncia SERIAL,
+	id_tipo_denuncia SERIAL,
 	tipo_denuncia VARCHAR(255) NOT NULL,
-	PRIMARY KEY (idTipoDenuncia)
+	PRIMARY KEY (id_tipo_denuncia)
 );
 
-CREATE TABLE IF NOT EXISTS TipoAnimal
+CREATE TABLE IF NOT EXISTS tipo_animal
 ( 
-	idTipoAnimal INTEGER,
-	tipoAnimal VARCHAR(255) NOT NULL,
-	PRIMARY KEY (idTipoAnimal)
+	id_tipo_animal INTEGER,
+	tipo_animal VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id_tipo_animal)
 );
 
-CREATE TABLE IF NOT EXISTS Condicao
+CREATE TABLE IF NOT EXISTS condicao
 ( 
-	idCondicao INTEGER,
+	id_condicao INTEGER,
 	condicao VARCHAR(255) NOT NULL,
-	PRIMARY KEY (idCondicao)
+	PRIMARY KEY (id_condicao)
 );
 
-CREATE TABLE IF NOT EXISTS Porte
+CREATE TABLE IF NOT EXISTS porte
 ( 
-	idPorte INTEGER,
+	id_porte INTEGER,
 	porte VARCHAR(255) NOT NULL,
-	PRIMARY KEY (idPorte)
+	PRIMARY KEY (id_porte)
 );
 
-CREATE TABLE IF NOT EXISTS Pelo
+CREATE TABLE IF NOT EXISTS pelo
 ( 
-	idPelo INTEGER,
+	id_pelo INTEGER,
 	pelo VARCHAR(255) NOT NULL,
-	PRIMARY KEY (idPelo)
+	PRIMARY KEY (id_pelo)
 );
 
-CREATE TABLE IF NOT EXISTS Coloracao
+CREATE TABLE IF NOT EXISTS coloracao
 ( 
-	idColoracao INTEGER,
+	id_coloracao INTEGER,
 	coloracao VARCHAR(255) NOT NULL,
-	PRIMARY KEY (idColoracao)
+	PRIMARY KEY (id_coloracao)
 );
 
-CREATE TABLE IF NOT EXISTS Denuncia
+CREATE TABLE IF NOT EXISTS denuncia
 ( 
-	idDenuncia INTEGER,
+	id_denuncia INTEGER,
 	cep VARCHAR(20) NOT NULL,
 	descricao VARCHAR(1000) NOT NULL,
 	endereco VARCHAR(255),
 	referencia VARCHAR(255),
 	quantidade INTEGER,
-	idUsuario INTEGER,
-	idTipoDenuncia INTEGER,
-	idPelo INTEGER,
-	idColoracao INTEGER,
-	idTipoAnimal INTEGER,
-	idPorte INTEGER,
-	idCondicao INTEGER,
-	PRIMARY KEY (idDenuncia),
-	FOREIGN KEY (idUsuario) REFERENCES Usuario (idUsuario),
-	FOREIGN KEY (idTipoDenuncia) REFERENCES TipoDenuncia (idTipoDenuncia),
-	FOREIGN KEY (idPelo) REFERENCES Pelo (idPelo),
-	FOREIGN KEY (idColoracao) REFERENCES Coloracao (idColoracao),
-	FOREIGN KEY (idTipoAnimal) REFERENCES TipoAnimal (idTipoAnimal),
-	FOREIGN KEY (idPorte) REFERENCES Porte (idPorte),
-	FOREIGN KEY (idCondicao) REFERENCES Condicao (idCondicao)
+	id_usuario INTEGER,
+	id_tipo_denuncia INTEGER,
+	id_pelo INTEGER,
+	id_coloracao INTEGER,
+	id_tipo_animal INTEGER,
+	id_porte INTEGER,
+	id_condicao INTEGER,
+	PRIMARY KEY (id_denuncia),
+	FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario),
+	FOREIGN KEY (id_tipo_denuncia) REFERENCES tipo_denuncia (id_tipo_denuncia),
+	FOREIGN KEY (id_pelo) REFERENCES pelo (id_pelo),
+	FOREIGN KEY (id_coloracao) REFERENCES coloracao (id_coloracao),
+	FOREIGN KEY (id_tipo_animal) REFERENCES tipo_animal (id_tipo_animal),
+	FOREIGN KEY (id_porte) REFERENCES porte (id_porte),
+	FOREIGN KEY (id_condicao) REFERENCES condicao (id_condicao)
 );
 
-CREATE TABLE IF NOT EXISTS Resgate
+CREATE TABLE IF NOT EXISTS resgate
 ( 
-	idResgate INTEGER,
+	id_resgate INTEGER,
 	descricao VARCHAR(1000) NOT NULL,
-	idUsuario INTEGER,
-	idDenuncia INTEGER,
-	idTipoAnimal INTEGER,
-	idCondicao INTEGER,
-	idPorte INTEGER,
-	idColoracao INTEGER,
-	PRIMARY KEY (idResgate),
-	FOREIGN KEY (idUsuario) REFERENCES Usuario (idUsuario),
-	FOREIGN KEY (idDenuncia) REFERENCES Denuncia (idDenuncia),
-	FOREIGN KEY (idTipoAnimal) REFERENCES TipoAnimal (idTipoAnimal),
-	FOREIGN KEY (idCondicao) REFERENCES Condicao (idCondicao),
-	FOREIGN KEY (idPorte) REFERENCES Porte (idPorte),
-	FOREIGN KEY (idColoracao) REFERENCES Coloracao (idColoracao)
+	id_usuario INTEGER,
+	id_denuncia INTEGER,
+	id_tipo_animal INTEGER,
+	id_condicao INTEGER,
+	id_porte INTEGER,
+	id_coloracao INTEGER,
+	PRIMARY KEY (id_resgate),
+	FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario),
+	FOREIGN KEY (id_denuncia) REFERENCES denuncia (id_denuncia),
+	FOREIGN KEY (id_tipo_animal) REFERENCES tipo_animal (id_tipo_animal),
+	FOREIGN KEY (id_condicao) REFERENCES condicao (id_condicao),
+	FOREIGN KEY (id_porte) REFERENCES porte (id_porte),
+	FOREIGN KEY (id_coloracao) REFERENCES coloracao (id_coloracao)
 );
