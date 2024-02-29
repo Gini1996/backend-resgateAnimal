@@ -37,4 +37,17 @@ public class ClassExceptionHandler
 		
 		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(err);
    }
+   
+   @ExceptionHandler(RegistroInexistente.class)	
+   public ResponseEntity<StandardError> registroInexistente(RegistroInexistente e, HttpServletRequest request)
+   {
+		StandardError err = new StandardError();
+		err.setTimestamp(Instant.now());
+		err.setStatus(HttpStatus.NOT_FOUND.value());
+		err.setError("Erro de implementação: ");
+		err.setMessage(e.getMessage());
+		err.setPath(request.getRequestURI());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+   }
 }
