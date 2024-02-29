@@ -2,7 +2,6 @@ package br.com.jhowsoftware.resgateanimal.services;
 
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,14 +67,9 @@ public class TipoDenunciaService extends ServiceUtils
 		
 		validaString(tpDenuncia);
 		
-		Optional<TipoDenuncia> optTipoDenuncia = tipoDenunciaRepository.findById(id);
-
-        if(optTipoDenuncia.isPresent()) 
-        {
-            TipoDenuncia tipoDenuncia = optTipoDenuncia.get();
-            tipoDenuncia.setTipoDenuncia(tpDenuncia);
-            
-            tipoDenunciaRepository.save(tipoDenuncia);
-        }
+		TipoDenuncia tipoDenuncia = tipoDenunciaRepository.findById(id).get();
+		tipoDenuncia.setTipoDenuncia(tpDenuncia);
+         
+        tipoDenunciaRepository.save(tipoDenuncia);
 	}
 }
