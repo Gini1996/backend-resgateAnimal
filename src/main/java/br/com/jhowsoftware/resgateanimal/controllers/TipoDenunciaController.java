@@ -25,9 +25,10 @@ public class TipoDenunciaController
 	private TipoDenunciaService tipoDenunciaService;
 	
 	@GetMapping
-	public List<TipoDenunciaDTO> findAll()
+	public ResponseEntity<List<TipoDenunciaDTO>> findAll()
 	{
-		return tipoDenunciaService.findAll();
+		List<TipoDenunciaDTO> denuncias =  tipoDenunciaService.findAll();
+		return denuncias != null ? ResponseEntity.ok(denuncias): ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	
 	@GetMapping(value = "/{id}")
