@@ -2,6 +2,8 @@ package br.com.jhowsoftware.resgateanimal.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,14 +41,14 @@ public class TipoDenunciaController
     }
 	
 	@PostMapping("/addTpDenuncia")
-	public ResponseEntity<String> addTpDenuncia(@RequestBody TipoDenunciaDTO body)
+	public ResponseEntity<String> addTpDenuncia(@Valid @RequestBody TipoDenunciaDTO body)
 	{
 		tipoDenunciaService.adicionarTipoDenuncia(body.getTipoDenuncia());
-		return ResponseEntity.status(HttpStatus.OK).body("Tipo de denúncia cadastrado com sucesso.");   
+		return ResponseEntity.status(HttpStatus.OK).body("Tipo de denúncia cadastrado com sucesso.");
 	}
 	
 	@PutMapping("/attTpDenuncia/{id}")
-    public ResponseEntity<String> updateTpDenuncia(@PathVariable Long id, @RequestBody TipoDenunciaDTO body) 
+    public ResponseEntity<String> updateTpDenuncia(@PathVariable Long id, @Valid @RequestBody TipoDenunciaDTO body) 
 	{
 		tipoDenunciaService.atualizarTipoDenuncia(id, body.getTipoDenuncia());
 		return ResponseEntity.status(HttpStatus.OK).body("Tipo de denúncia atualizado com sucesso.");
