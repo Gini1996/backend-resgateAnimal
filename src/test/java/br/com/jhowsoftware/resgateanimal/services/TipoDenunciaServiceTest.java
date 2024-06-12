@@ -33,7 +33,7 @@ public class TipoDenunciaServiceTest
     private TipoDenuncia tipoDenuncia;
 
     @BeforeEach
-    void setUp() 
+    public void setUp() 
     {
         tipoDenuncia = new TipoDenuncia();
         tipoDenuncia.setIdTipoDenuncia(1L);
@@ -41,7 +41,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    void testFindAllSuccess() 
+    public void testFindAllSuccess() 
     {
         when(tipoDenunciaRepository.findAll()).thenReturn(List.of(tipoDenuncia));
 
@@ -53,7 +53,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    void testFindAllFailure() 
+    public void testFindAllFailure() 
     {
         when(tipoDenunciaRepository.findAll()).thenThrow(new RuntimeException("Erro no banco de dados"));
 
@@ -64,7 +64,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    void testFindByIdSuccess() 
+    public void testFindByIdSuccess() 
     {
         when(tipoDenunciaRepository.findById(1L)).thenReturn(Optional.of(tipoDenuncia));
 
@@ -76,7 +76,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    void testFindByIdFailure() 
+    public void testFindByIdFailure() 
     {
         when(tipoDenunciaRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -86,7 +86,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    void testAdicionarTipoDenunciaSuccess() 
+    public void testAdicionarTipoDenunciaSuccess() 
     {
         when(tipoDenunciaRepository.existsByTipoDenuncia(anyString())).thenReturn(false);
         when(tipoDenunciaRepository.save(any(TipoDenuncia.class))).thenReturn(new TipoDenuncia());
@@ -97,7 +97,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    void testAdicionarTipoDenunciaValorDivergente() 
+    public void testAdicionarTipoDenunciaValorDivergente() 
     {
         ValorDivergenteException exception = assertThrows(ValorDivergenteException.class, () -> { tipoDenunciaService.adicionarTipoDenuncia("123");});
 
@@ -107,7 +107,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    void testAdicionarTipoDenunciaRegistroDuplicado() 
+    public void testAdicionarTipoDenunciaRegistroDuplicado() 
     {
         when(tipoDenunciaRepository.existsByTipoDenuncia("Teste")).thenReturn(true);
 
@@ -119,28 +119,40 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    void testAtualizarTipoDenunciaSuccess() 
+    public void testAtualizarTipoDenunciaSuccess() 
     {
-        when(tipoDenunciaRepository.existsById(1L)).thenReturn(true);
-        when(tipoDenunciaRepository.findById(1L)).thenReturn(Optional.of(tipoDenuncia));
+        Long id = 1L;
+        String novoTipoDenuncia = "Novo Tipo";
+        
+        TipoDenuncia tipoDenuncia = new TipoDenuncia();
+        tipoDenuncia.setIdTipoDenuncia(id);
+        tipoDenuncia.setTipoDenuncia("Antigo Tipo");
 
-        tipoDenunciaService.atualizarTipoDenuncia(1L, "Abandono de Animais");
+        when(tipoDenunciaRepository.findById(id)).thenReturn(Optional.of(tipoDenuncia));
+        when(tipoDenunciaRepository.save(any(TipoDenuncia.class))).thenAnswer(i -> i.getArgument(0));
 
-        verify(tipoDenunciaRepository, times(1)).save(any(TipoDenuncia.class));
+        TipoDenunciaDTO result = tipoDenunciaService.atualizarTipoDenuncia(id, novoTipoDenuncia);
+
+        assertNotNull(result);
+        assertEquals(id, result.getIdTipoDenuncia());
+        assertEquals(novoTipoDenuncia, result.getTipoDenuncia());
     }
 
     @Test
-    void testAtualizarTipoDenunciaFailure() 
+    public void testAtualizarTipoDenunciaNotFound() 
     {
-        when(tipoDenunciaRepository.existsById(1L)).thenReturn(false);
+        Long id = 1L;
+        String novoTipoDenuncia = "Novo Tipo";
 
-        assertThrows(RegistroInexistente.class, () -> { tipoDenunciaService.atualizarTipoDenuncia(1L, "Abandono de Animais");});
+        when(tipoDenunciaRepository.findById(id)).thenReturn(Optional.empty());
 
-        verify(tipoDenunciaRepository, never()).save(any(TipoDenuncia.class));
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> { tipoDenunciaService.atualizarTipoDenuncia(id, novoTipoDenuncia);});
+
+        assertEquals("Tipo de denúncia não encontrado com o ID: " + id, thrown.getMessage());
     }
 
     @Test
-    void testDeletarTipoDenunciaSuccess() 
+    public void testDeletarTipoDenunciaSuccess() 
     {
         long id = 1L;
         when(tipoDenunciaRepository.existsById(id)).thenReturn(true);
@@ -151,7 +163,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    void testDeletarTipoDenunciaFailure() 
+    public void testDeletarTipoDenunciaFailure() 
     {
         long id = 1L;
         when(tipoDenunciaRepository.existsById(id)).thenReturn(false);

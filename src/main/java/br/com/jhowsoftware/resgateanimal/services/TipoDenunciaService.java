@@ -2,7 +2,6 @@ package br.com.jhowsoftware.resgateanimal.services;
 
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,15 +38,9 @@ public class TipoDenunciaService extends ServiceUtils
 	@Transactional(readOnly = true)
 	public TipoDenunciaDTO findById(Long id)
 	{
-		try 
-		{
-	        TipoDenuncia result = tipoDenunciaRepository.findById(id).get();
-	        return new TipoDenunciaDTO(result);
-	    } 
-		catch (NoSuchElementException e) 
-		{
-	        throw new RegistroInexistente("O ID: " + id + " não foi localizado no banco de dados");
-	    }
+		TipoDenuncia result = tipoDenunciaRepository.findById(id)
+							  .orElseThrow(() -> new RegistroInexistente("O ID: " + id + " não foi localizado no banco de dados"));;
+	    return new TipoDenunciaDTO(result);
 	}
 	
 	@Transactional
@@ -60,7 +53,7 @@ public class TipoDenunciaService extends ServiceUtils
 	}
 	
 	@Transactional
-	public void adicionarTipoDenuncia(String tpDenuncia) 
+	public TipoDenunciaDTO adicionarTipoDenuncia(String tpDenuncia) 
 	{
 		validaString(tpDenuncia);
 
@@ -70,20 +63,31 @@ public class TipoDenunciaService extends ServiceUtils
         TipoDenuncia tipoDenuncia = new TipoDenuncia();
         tipoDenuncia.setTipoDenuncia(tpDenuncia);
 
-        tipoDenunciaRepository.save(tipoDenuncia);
+        TipoDenuncia save = tipoDenunciaRepository.save(tipoDenuncia);
+        
+        TipoDenunciaDTO tipoDenunciaDTO = new TipoDenunciaDTO();
+        tipoDenunciaDTO.setIdTipoDenuncia(save.getIdTipoDenuncia());
+        tipoDenunciaDTO.setTipoDenuncia(save.getTipoDenuncia());
+
+        return tipoDenunciaDTO;
 	}
 	
 	@Transactional
-	public void atualizarTipoDenuncia(Long id, String tpDenuncia)
+	public TipoDenunciaDTO atualizarTipoDenuncia(Long id, String tpDenuncia)
 	{
-		if(!tipoDenunciaRepository.existsById(id))
-			throw new RegistroInexistente("O ID: " + id + " não foi localizado no banco de dados");
-		
 		validaString(tpDenuncia);
 		
-		TipoDenuncia tipoDenuncia = tipoDenunciaRepository.findById(id).get();
+		TipoDenuncia tipoDenuncia = tipoDenunciaRepository.findById(id)
+									.orElseThrow(() -> new RegistroInexistente("Tipo de denúncia não encontrado com o ID: " + id));
+        
 		tipoDenuncia.setTipoDenuncia(tpDenuncia);
          
-        tipoDenunciaRepository.save(tipoDenuncia);
+		TipoDenuncia save = tipoDenunciaRepository.save(tipoDenuncia);
+		
+		TipoDenunciaDTO tipoDenunciaDTO = new TipoDenunciaDTO();
+        tipoDenunciaDTO.setIdTipoDenuncia(save.getIdTipoDenuncia());
+        tipoDenunciaDTO.setTipoDenuncia(save.getTipoDenuncia());
+
+        return tipoDenunciaDTO;
 	}
 }
