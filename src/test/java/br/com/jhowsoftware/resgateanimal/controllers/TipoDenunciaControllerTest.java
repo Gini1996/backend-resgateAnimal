@@ -1,5 +1,6 @@
 package br.com.jhowsoftware.resgateanimal.controllers;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -7,7 +8,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -57,7 +57,8 @@ public class TipoDenunciaControllerTest
         mockMvc.perform(get("/tipodenuncia")
                .contentType(MediaType.APPLICATION_JSON))
                .andExpect(status().isOk())
-               .andExpect(jsonPath("$").isArray());
+               .andExpect(jsonPath("$.status").value("200"))
+               .andExpect(jsonPath("$.data").isArray());
     }
 
     @Test
@@ -84,7 +85,7 @@ public class TipoDenunciaControllerTest
     @Test
     public void testFindById_NotFound() throws Exception 
     {
-        when(tipoDenunciaService.findById(1L)).thenReturn(null);
+    	doThrow(new RegistroInexistente("Tipo de denúncia não encontrado")).when(tipoDenunciaService).findById(any(Long.class));
 
         mockMvc.perform(get("/tipodenuncia/1"))
                .andExpect(status().isNotFound());
@@ -94,13 +95,17 @@ public class TipoDenunciaControllerTest
     public void testAddTpDenuncia() throws Exception 
     {
         String json = "{\"tipoDenuncia\":\"Denúncia Teste\"}";
-        doNothing().when(tipoDenunciaService).adicionarTipoDenuncia("Denúncia Teste");
+        TipoDenunciaDTO denuncia = new TipoDenunciaDTO();
+        denuncia.setTipoDenuncia("Denúncia Teste");
+
+        when(tipoDenunciaService.adicionarTipoDenuncia("Denúncia Teste")).thenReturn(denuncia);
 
         mockMvc.perform(post("/tipodenuncia/addTpDenuncia")
                .contentType(MediaType.APPLICATION_JSON)
                .content(json))
-               .andExpect(status().isOk())
-               .andExpect(content().string("Tipo de denúncia cadastrado com sucesso."));
+               .andExpect(status().isCreated())
+               .andExpect(jsonPath("$.status").value("201"))
+               .andExpect(jsonPath("$.data.tipoDenuncia").value("Denúncia Teste"));
     }
 
     @Test
@@ -118,17 +123,22 @@ public class TipoDenunciaControllerTest
     public void testUpdateTpDenuncia() throws Exception 
     {
         String json = "{\"tipoDenuncia\":\"Denúncia Atualizada\"}";
-        doNothing().when(tipoDenunciaService).atualizarTipoDenuncia(1L, "Denúncia Atualizada");
+        TipoDenunciaDTO denuncia = new TipoDenunciaDTO();
+        denuncia.setTipoDenuncia("Denúncia Atualizada");
+
+        when(tipoDenunciaService.atualizarTipoDenuncia(1L, "Denúncia Atualizada")).thenReturn(denuncia);
 
         mockMvc.perform(put("/tipodenuncia/attTpDenuncia/1")
                .contentType(MediaType.APPLICATION_JSON)
                .content(json))
                .andExpect(status().isOk())
-               .andExpect(content().string("Tipo de denúncia atualizado com sucesso."));
+               .andExpect(jsonPath("$.status").value("200"))
+               .andExpect(jsonPath("$.data.tipoDenuncia").value("Denúncia Atualizada"));
     }
 
     @Test
-    public void testUpdateTpDenuncia_NotFound() throws Exception {
+    public void testUpdateTpDenuncia_NotFound() throws Exception 
+    {
         doThrow(new RegistroInexistente("Tipo de denúncia não encontrado"))
                 .when(tipoDenunciaService).atualizarTipoDenuncia(1L, "Nova Denúncia");
 
@@ -146,7 +156,8 @@ public class TipoDenunciaControllerTest
         mockMvc.perform(delete("/tipodenuncia/excluir/1")
                .contentType(MediaType.APPLICATION_JSON))
                .andExpect(status().isOk())
-               .andExpect(content().string("Tipo de denúncia excluído com sucesso."));
+               .andExpect(jsonPath("$.status").value("200"))
+               .andExpect(jsonPath("$.message").value("Denuncia ID: 1 excluída com sucesso"));
     }
 
     @Test
@@ -158,5 +169,4 @@ public class TipoDenunciaControllerTest
         mockMvc.perform(delete("/tipodenuncia/excluir/1"))
                .andExpect(status().isNotFound());
     }
-    
 }

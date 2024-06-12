@@ -1,6 +1,5 @@
 package br.com.jhowsoftware.resgateanimal.exceptions;
 
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,11 +18,8 @@ public class ClassExceptionHandler
    public ResponseEntity<StandardError> registroDuplicado(RegistroDuplicadoException e, HttpServletRequest request)
    {
 		StandardError err = new StandardError();
-		err.setTimestamp(Instant.now());
 		err.setStatus(HttpStatus.BAD_REQUEST.value());
-		err.setError("Erro de implementação: ");
 		err.setMessage(e.getMessage());
-		err.setPath(request.getRequestURI());
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
    }
@@ -32,11 +28,8 @@ public class ClassExceptionHandler
    public ResponseEntity<StandardError> valorDivergente(ValorDivergenteException e, HttpServletRequest request)
    {
 		StandardError err = new StandardError();
-		err.setTimestamp(Instant.now());
 		err.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
-		err.setError("Erro de implementação: ");
 		err.setMessage(e.getMessage());
-		err.setPath(request.getRequestURI());
 		
 		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(err);
    }
@@ -45,11 +38,8 @@ public class ClassExceptionHandler
    public ResponseEntity<StandardError> registroInexistente(RegistroInexistente e, HttpServletRequest request)
    {
 		StandardError err = new StandardError();
-		err.setTimestamp(Instant.now());
 		err.setStatus(HttpStatus.NOT_FOUND.value());
-		err.setError("Erro de implementação: ");
 		err.setMessage(e.getMessage());
-		err.setPath(request.getRequestURI());
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
    }

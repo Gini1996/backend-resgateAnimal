@@ -15,7 +15,7 @@ class TipoDenunciaRepositoryTest
 	 private TipoDenunciaRepository tipoDenunciaRepository;
 
 	 @Test
-	 void testExistsByTipoDenunciaSuccess() 
+	 public void testExistsByTipoDenunciaSuccess() 
 	 {
 		 String tipoDenuncia = "Teste";
 		 when(tipoDenunciaRepository.existsByTipoDenuncia(tipoDenuncia)).thenReturn(true);
@@ -28,7 +28,7 @@ class TipoDenunciaRepositoryTest
 	 }
 
 	 @Test
-	 void testExistsByTipoDenunciaFailure() 
+	 public void testExistsByTipoDenunciaFailure() 
 	 {
 		 String tipoDenuncia = "Teste";
 	     when(tipoDenunciaRepository.existsByTipoDenuncia(tipoDenuncia)).thenReturn(false);
@@ -41,7 +41,7 @@ class TipoDenunciaRepositoryTest
 	 }
 	 
 	 @Test
-	 void testExistsByTipoDenunciaNotInDatabase() 
+	 public void testExistsByTipoDenunciaNotInDatabase() 
 	 {
 	     String tipoDenuncia = "Tipo Inexistente";
 	     when(tipoDenunciaRepository.existsByTipoDenuncia(tipoDenuncia)).thenReturn(false);
@@ -54,7 +54,7 @@ class TipoDenunciaRepositoryTest
 	 }
 	 
 	 @Test
-	 void testExistsByTipoDenunciaDatabaseException() 
+	 public void testExistsByTipoDenunciaDatabaseException() 
 	 {
 	     String tipoDenuncia = "Teste";
 	     when(tipoDenunciaRepository.existsByTipoDenuncia(tipoDenuncia)).thenThrow(new RuntimeException("Erro de banco de dados"));
@@ -67,7 +67,7 @@ class TipoDenunciaRepositoryTest
 	 }
 	 
 	 @Test
-	 void testExistsByTipoDenunciaDifferentTypes() 
+	 public void testExistsByTipoDenunciaDifferentTypes() 
 	 {
 	     String tipoDenunciaExistente = "Tipo Existente";
 	     String tipoDenunciaInexistente = "Tipo Inexistente";
