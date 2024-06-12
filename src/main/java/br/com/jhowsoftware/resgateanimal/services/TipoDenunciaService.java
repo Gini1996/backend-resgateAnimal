@@ -2,6 +2,7 @@ package br.com.jhowsoftware.resgateanimal.services;
 
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,42 +22,55 @@ public class TipoDenunciaService extends ServiceUtils
 	private TipoDenunciaRepository tipoDenunciaRepository;
 	
 	@Transactional(readOnly = true)
-	public List<TipoDenunciaDTO> findAll()
+	public List<TipoDenunciaDTO> findAll() 
 	{
-		List<TipoDenuncia> resultTpDenuncia = tipoDenunciaRepository.findAll();
-		List<TipoDenunciaDTO> dtoTpDenuncia = resultTpDenuncia.stream().map(x -> new TipoDenunciaDTO(x)).toList();
-		
-		return dtoTpDenuncia;
+	    try 
+	    {
+	        List<TipoDenuncia> resultTpDenuncia = tipoDenunciaRepository.findAll();
+	        List<TipoDenunciaDTO> dtoTpDenuncia = resultTpDenuncia.stream().map(x -> new TipoDenunciaDTO(x)).toList();
+	        return dtoTpDenuncia;
+	    } 
+	    catch (Exception e) 
+	    {
+	        throw new RuntimeException("Erro ao buscar todos os tipos de denúncia", e);
+	    }
 	}
 	
 	@Transactional(readOnly = true)
 	public TipoDenunciaDTO findById(Long id)
 	{
-		TipoDenuncia result = tipoDenunciaRepository.findById(id).get();
-		return new TipoDenunciaDTO(result);	
+		try 
+		{
+	        TipoDenuncia result = tipoDenunciaRepository.findById(id).get();
+	        return new TipoDenunciaDTO(result);
+	    } 
+		catch (NoSuchElementException e) 
+		{
+	        throw new RegistroInexistente("O ID: " + id + " não foi localizado no banco de dados");
+	    }
 	}
 	
 	@Transactional
 	public void deletarTipoDenuncia(Long id)
 	{
-		if(!tipoDenunciaRepository.existsById(id))
-			throw new RegistroInexistente("O ID: " + id + " não foi localizado no banco de dados");
-		
-		tipoDenunciaRepository.deleteById(id);
+        if(!tipoDenunciaRepository.existsById(id))
+        	throw new RegistroInexistente("O ID: " + id + " não foi localizado no banco de dados");
+        
+        tipoDenunciaRepository.deleteById(id);
 	}
 	
 	@Transactional
-	public void adicionarTipoDenuncia(String tpDenuncia)
-	{ 
+	public void adicionarTipoDenuncia(String tpDenuncia) 
+	{
 		validaString(tpDenuncia);
-		
-		if (tipoDenunciaRepository.existsByTipoDenuncia(tpDenuncia)) 
-			throw new RegistroDuplicadoException("O tipo de denuncia: " + tpDenuncia + " já se encontra cadastrado no banco de dados");
-			
-		TipoDenuncia tipoDenuncia = new TipoDenuncia();
-		tipoDenuncia.setTipoDenuncia(tpDenuncia);
-			
-		tipoDenunciaRepository.save(tipoDenuncia); 
+
+        if (tipoDenunciaRepository.existsByTipoDenuncia(tpDenuncia)) 
+            throw new RegistroDuplicadoException("O tipo de denuncia: " + tpDenuncia + " já se encontra cadastrado no banco de dados");
+
+        TipoDenuncia tipoDenuncia = new TipoDenuncia();
+        tipoDenuncia.setTipoDenuncia(tpDenuncia);
+
+        tipoDenunciaRepository.save(tipoDenuncia);
 	}
 	
 	@Transactional
