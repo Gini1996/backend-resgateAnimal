@@ -12,20 +12,23 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import br.com.jhowsoftware.resgateanimal.dtos.TipoDenunciaDTO;
 import br.com.jhowsoftware.resgateanimal.entities.TipoDenuncia;
 import br.com.jhowsoftware.resgateanimal.exceptions.RegistroDuplicadoException;
 import br.com.jhowsoftware.resgateanimal.exceptions.RegistroInexistente;
 import br.com.jhowsoftware.resgateanimal.exceptions.ValorDivergenteException;
 import br.com.jhowsoftware.resgateanimal.repositories.TipoDenunciaRepository;
+import jakarta.persistence.EntityManager;
 
 @ExtendWith(MockitoExtension.class)
 public class TipoDenunciaServiceTest 
 {
 
-    @Mock
+	@Mock
     private TipoDenunciaRepository tipoDenunciaRepository;
+    
+    @Mock
+    private EntityManager entityManager;
 
     @InjectMocks
     private TipoDenunciaService tipoDenunciaService;
@@ -154,12 +157,17 @@ public class TipoDenunciaServiceTest
     @Test
     public void testDeletarTipoDenunciaSuccess() 
     {
-        long id = 1L;
-        when(tipoDenunciaRepository.existsById(id)).thenReturn(true);
+    	long id = 1L;
 
-        assertDoesNotThrow(() -> tipoDenunciaService.deletarTipoDenuncia(id));
+        when(tipoDenunciaRepository.existsById(id)).thenReturn(false);
 
-        verify(tipoDenunciaRepository, times(1)).deleteById(id);
+        RegistroInexistente exception = assertThrows(RegistroInexistente.class, () -> {tipoDenunciaService.deletarTipoDenuncia(id);});
+
+        String expectedMessage = "O ID: " + id + " não foi localizado no banco de dados";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+
+        verify(tipoDenunciaRepository, never()).deleteById(id);
     }
 
     @Test
