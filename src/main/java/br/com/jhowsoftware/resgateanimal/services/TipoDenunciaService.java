@@ -46,10 +46,15 @@ public class TipoDenunciaService extends ServiceUtils
 	@Transactional
 	public void deletarTipoDenuncia(Long id)
 	{
+		final String idTabela = "id_tipo_denuncia";
+		final String tabela = "tipo_denuncia";
+		final String sequence = "public.tipo_denuncia_id_tipo_denuncia_seq";
+		
         if(!tipoDenunciaRepository.existsById(id))
         	throw new RegistroInexistente("O ID: " + id + " não foi localizado no banco de dados");
         
         tipoDenunciaRepository.deleteById(id);
+        reiniciarSequencia(idTabela,tabela,sequence);
 	}
 	
 	@Transactional
