@@ -48,13 +48,12 @@ public class TipoDenunciaService extends ServiceUtils
 	{
 		final String idTabela = "id_tipo_denuncia";
 		final String tabela = "tipo_denuncia";
-		final String sequence = "public.tipo_denuncia_id_tipo_denuncia_seq";
 		
         if(!tipoDenunciaRepository.existsById(id))
         	throw new RegistroInexistente("O ID: " + id + " não foi localizado no banco de dados");
         
         tipoDenunciaRepository.deleteById(id);
-        reiniciarSequencia(idTabela,tabela,sequence);
+        reiniciarSequencia(idTabela,tabela);
 	}
 	
 	@Transactional

@@ -155,22 +155,6 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    public void testDeletarTipoDenunciaSuccess() 
-    {
-    	long id = 1L;
-
-        when(tipoDenunciaRepository.existsById(id)).thenReturn(false);
-
-        RegistroInexistente exception = assertThrows(RegistroInexistente.class, () -> {tipoDenunciaService.deletarTipoDenuncia(id);});
-
-        String expectedMessage = "O ID: " + id + " não foi localizado no banco de dados";
-        String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(expectedMessage));
-
-        verify(tipoDenunciaRepository, never()).deleteById(id);
-    }
-
-    @Test
     public void testDeletarTipoDenunciaFailure() 
     {
         long id = 1L;

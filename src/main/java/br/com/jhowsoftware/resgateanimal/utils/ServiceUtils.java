@@ -21,18 +21,26 @@ public class ServiceUtils
 	private EntityManager entityManager;
 
 	@Transactional
-    public void reiniciarSequencia(String id, String tabela, String sequence) 
+	public void reiniciarSequencia(String id, String tabela) 
 	{
-        Integer ultimoIdInt = (Integer) entityManager.createNativeQuery("SELECT MAX("+ id +") FROM " + tabela)
-                                                     .getSingleResult();
-        
-        Long ultimoId = ultimoIdInt != null ? ultimoIdInt.longValue() : 0L;
+		String queryObterSequencia = getQueryObterSequencia(id, tabela);
+		String sequence = (String) entityManager.createNativeQuery(queryObterSequencia)
+	                                            .getSingleResult();
+		
+		if (sequence != null) 
+		{
+			Integer ultimoIdInt = (Integer) entityManager.createNativeQuery("SELECT MAX(" + id + ") FROM " + tabela)
+	                                                     .getSingleResult();
+	            
+	        Long ultimoId = ultimoIdInt != null ? ultimoIdInt.longValue() : 0L;
 
-        if (ultimoId != null) 
-        {
+	        entityManager.createNativeQuery("ALTER SEQUENCE " + sequence + " RESTART WITH " + (ultimoId + 1))
+	                     .executeUpdate();
+	    }
+	}
 
-            entityManager.createNativeQuery("ALTER SEQUENCE " + sequence + " RESTART WITH " + (ultimoId + 1))
-                         .executeUpdate();
-        }
+	private String getQueryObterSequencia(String id, String tabela) 
+	{
+		return "SELECT pg_get_serial_sequence('" + tabela + "', '" + id + "')";
 	}
 }
