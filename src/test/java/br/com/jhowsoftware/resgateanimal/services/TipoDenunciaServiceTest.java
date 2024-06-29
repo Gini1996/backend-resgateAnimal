@@ -21,7 +21,7 @@ import br.com.jhowsoftware.resgateanimal.repositories.TipoDenunciaRepository;
 import jakarta.persistence.EntityManager;
 
 @ExtendWith(MockitoExtension.class)
-public class TipoDenunciaServiceTest 
+public class TipoDenunciaServiceTest
 {
 
 	@Mock
@@ -44,7 +44,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    public void testFindAllSuccess() 
+    void testFindAllSuccess()
     {
         when(tipoDenunciaRepository.findAll()).thenReturn(List.of(tipoDenuncia));
 
@@ -56,18 +56,18 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    public void testFindAllFailure() 
+    void testFindAllFailure()
     {
-        when(tipoDenunciaRepository.findAll()).thenThrow(new RuntimeException("Erro no banco de dados"));
+        when(tipoDenunciaRepository.findAll()).thenThrow(new RegistroInexistente("Não existem denuncias cadastradas"));
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> { tipoDenunciaService.findAll();});
+        RuntimeException exception = assertThrows(RegistroInexistente.class, () -> { tipoDenunciaService.findAll();});
 
-        assertEquals("Erro ao buscar todos os tipos de denúncia", exception.getMessage());
+        assertEquals("Não existem denuncias cadastradas", exception.getMessage());
         verify(tipoDenunciaRepository, times(1)).findAll();
     }
 
     @Test
-    public void testFindByIdSuccess() 
+    void testFindByIdSuccess()
     {
         when(tipoDenunciaRepository.findById(1L)).thenReturn(Optional.of(tipoDenuncia));
 
@@ -79,7 +79,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    public void testFindByIdFailure() 
+    void testFindByIdFailure()
     {
         when(tipoDenunciaRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -89,7 +89,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    public void testAdicionarTipoDenunciaSuccess() 
+    void testAdicionarTipoDenunciaSuccess()
     {
         when(tipoDenunciaRepository.existsByTipoDenuncia(anyString())).thenReturn(false);
         when(tipoDenunciaRepository.save(any(TipoDenuncia.class))).thenReturn(new TipoDenuncia());
@@ -100,7 +100,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    public void testAdicionarTipoDenunciaValorDivergente() 
+    void testAdicionarTipoDenunciaValorDivergente()
     {
         ValorDivergenteException exception = assertThrows(ValorDivergenteException.class, () -> { tipoDenunciaService.adicionarTipoDenuncia("123");});
 
@@ -110,7 +110,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    public void testAdicionarTipoDenunciaRegistroDuplicado() 
+    void testAdicionarTipoDenunciaRegistroDuplicado()
     {
         when(tipoDenunciaRepository.existsByTipoDenuncia("Teste")).thenReturn(true);
 
@@ -122,7 +122,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    public void testAtualizarTipoDenunciaSuccess() 
+    void testAtualizarTipoDenunciaSuccess()
     {
         Long id = 1L;
         String novoTipoDenuncia = "Novo Tipo";
@@ -142,7 +142,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    public void testAtualizarTipoDenunciaNotFound() 
+    void testAtualizarTipoDenunciaNotFound()
     {
         Long id = 1L;
         String novoTipoDenuncia = "Novo Tipo";
@@ -155,7 +155,7 @@ public class TipoDenunciaServiceTest
     }
 
     @Test
-    public void testDeletarTipoDenunciaFailure() 
+    void testDeletarTipoDenunciaFailure()
     {
         long id = 1L;
         when(tipoDenunciaRepository.existsById(id)).thenReturn(false);

@@ -26,7 +26,7 @@ public class TipoDenunciaController extends ControllerUtils
 {
 	@Autowired
 	private TipoDenunciaService tipoDenunciaService;
-	
+
 	@GetMapping
 	public ResponseEntity<ResponseAPI<List<TipoDenunciaDTO>>> findAll()
 	{

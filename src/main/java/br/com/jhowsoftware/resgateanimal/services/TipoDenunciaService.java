@@ -19,19 +19,18 @@ public class TipoDenunciaService extends ServiceUtils
 {
 	@Autowired
 	private TipoDenunciaRepository tipoDenunciaRepository;
-	
+
 	@Transactional(readOnly = true)
-	public List<TipoDenunciaDTO> findAll() 
-	{
+	public List<TipoDenunciaDTO> findAll() throws RegistroInexistente
+    {
 	    try 
 	    {
 	        List<TipoDenuncia> resultTpDenuncia = tipoDenunciaRepository.findAll();
-	        List<TipoDenunciaDTO> dtoTpDenuncia = resultTpDenuncia.stream().map(x -> new TipoDenunciaDTO(x)).toList();
-	        return dtoTpDenuncia;
+            return resultTpDenuncia.stream().map(TipoDenunciaDTO::new).toList();
 	    } 
 	    catch (Exception e) 
 	    {
-	        throw new RuntimeException("Erro ao buscar todos os tipos de denúncia", e);
+	        throw new RegistroInexistente("Não existem denuncias cadastradas");
 	    }
 	}
 	
@@ -39,7 +38,7 @@ public class TipoDenunciaService extends ServiceUtils
 	public TipoDenunciaDTO findById(Long id)
 	{
 		TipoDenuncia result = tipoDenunciaRepository.findById(id)
-							  .orElseThrow(() -> new RegistroInexistente("O ID: " + id + " não foi localizado no banco de dados"));;
+							  .orElseThrow(() -> new RegistroInexistente("O ID: " + id + " não foi localizado no banco de dados"));
 	    return new TipoDenunciaDTO(result);
 	}
 	

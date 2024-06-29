@@ -9,12 +9,11 @@ import jakarta.transaction.Transactional;
 
 public class ServiceUtils 
 {
-	public boolean validaString(String body)
+	public void validaString(String body)
 	{
 		if(StringUtils.isNumeric(body))
 			throw new ValorDivergenteException("Valor informado não corresponde com o tipo de campo solicitado pela aplicação");
-			
-		return false;
+
 	}
 	
 	@PersistenceContext

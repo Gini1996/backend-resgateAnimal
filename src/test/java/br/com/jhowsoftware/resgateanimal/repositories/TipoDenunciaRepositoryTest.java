@@ -15,7 +15,7 @@ class TipoDenunciaRepositoryTest
 	 private TipoDenunciaRepository tipoDenunciaRepository;
 
 	 @Test
-	 public void testExistsByTipoDenunciaSuccess() 
+	 void testExistsByTipoDenunciaSuccess()
 	 {
 		 String tipoDenuncia = "Teste";
 		 when(tipoDenunciaRepository.existsByTipoDenuncia(tipoDenuncia)).thenReturn(true);
@@ -28,7 +28,7 @@ class TipoDenunciaRepositoryTest
 	 }
 
 	 @Test
-	 public void testExistsByTipoDenunciaFailure() 
+	 void testExistsByTipoDenunciaFailure()
 	 {
 		 String tipoDenuncia = "Teste";
 	     when(tipoDenunciaRepository.existsByTipoDenuncia(tipoDenuncia)).thenReturn(false);
@@ -41,20 +41,7 @@ class TipoDenunciaRepositoryTest
 	 }
 	 
 	 @Test
-	 public void testExistsByTipoDenunciaNotInDatabase() 
-	 {
-	     String tipoDenuncia = "Tipo Inexistente";
-	     when(tipoDenunciaRepository.existsByTipoDenuncia(tipoDenuncia)).thenReturn(false);
-
-	     boolean result = tipoDenunciaRepository.existsByTipoDenuncia(tipoDenuncia);
-
-	     assertFalse(result);
-
-	     verify(tipoDenunciaRepository, times(1)).existsByTipoDenuncia(tipoDenuncia);
-	 }
-	 
-	 @Test
-	 public void testExistsByTipoDenunciaDatabaseException() 
+	 void testExistsByTipoDenunciaDatabaseException()
 	 {
 	     String tipoDenuncia = "Teste";
 	     when(tipoDenunciaRepository.existsByTipoDenuncia(tipoDenuncia)).thenThrow(new RuntimeException("Erro de banco de dados"));
@@ -67,7 +54,7 @@ class TipoDenunciaRepositoryTest
 	 }
 	 
 	 @Test
-	 public void testExistsByTipoDenunciaDifferentTypes() 
+	 void testExistsByTipoDenunciaDifferentTypes()
 	 {
 	     String tipoDenunciaExistente = "Tipo Existente";
 	     String tipoDenunciaInexistente = "Tipo Inexistente";
