@@ -23,6 +23,7 @@ Para acessar os modelos basta seguir até a pasta **resources/static/diagram**.
 - [x] Estruturação do projeto com banco de dados Postgres
 - [x] Inclusao dos diagramas do projeto
 - [x] Configuração e desenvolvimento dos scripts iniciais do projeto
+- [x] Implementação do SonarQube
 - [x] Implementação das Entities
 - [x] Implementação dos Repositories
 - [x] Estruturação dos Services
