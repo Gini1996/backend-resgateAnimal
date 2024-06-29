@@ -30,7 +30,7 @@ import br.com.jhowsoftware.resgateanimal.exceptions.RegistroInexistente;
 import br.com.jhowsoftware.resgateanimal.services.TipoDenunciaService;
 
 @WebMvcTest(TipoDenunciaController.class)
-public class TipoDenunciaControllerTest 
+class TipoDenunciaControllerTest
 {
 
     @Autowired
@@ -49,7 +49,7 @@ public class TipoDenunciaControllerTest
     }
 
     @Test
-    public void testFindAll() throws Exception 
+    void testFindAll() throws Exception
     {
         List<TipoDenunciaDTO> denuncias = new ArrayList<>();
         when(tipoDenunciaService.findAll()).thenReturn(denuncias);
@@ -62,7 +62,7 @@ public class TipoDenunciaControllerTest
     }
 
     @Test
-    public void testFindAll_NotFound() throws Exception 
+    void testFindAll_NotFound() throws Exception
     {
         when(tipoDenunciaService.findAll()).thenReturn(null);
 
@@ -71,7 +71,7 @@ public class TipoDenunciaControllerTest
     }
 
     @Test
-    public void testFindById() throws Exception 
+    void testFindById() throws Exception
     {
         TipoDenunciaDTO denuncia = new TipoDenunciaDTO();
         when(tipoDenunciaService.findById(1L)).thenReturn(denuncia);
@@ -83,7 +83,7 @@ public class TipoDenunciaControllerTest
     }
 
     @Test
-    public void testFindById_NotFound() throws Exception 
+    void testFindById_NotFound() throws Exception
     {
     	doThrow(new RegistroInexistente("Tipo de denúncia não encontrado")).when(tipoDenunciaService).findById(any(Long.class));
 
@@ -92,7 +92,7 @@ public class TipoDenunciaControllerTest
     }
 
     @Test
-    public void testAddTpDenuncia() throws Exception 
+    void testAddTpDenuncia() throws Exception
     {
         String json = "{\"tipoDenuncia\":\"Denúncia Teste\"}";
         TipoDenunciaDTO denuncia = new TipoDenunciaDTO();
@@ -109,7 +109,7 @@ public class TipoDenunciaControllerTest
     }
 
     @Test
-    public void testAddTpDenuncia_InvalidRequest() throws Exception 
+    void testAddTpDenuncia_InvalidRequest() throws Exception
     {
     	doThrow(new RegistroDuplicadoException("Tipo de denúncia duplicado")).when(tipoDenunciaService).adicionarTipoDenuncia("");
 
@@ -120,7 +120,7 @@ public class TipoDenunciaControllerTest
     }
 
     @Test
-    public void testUpdateTpDenuncia() throws Exception 
+    void testUpdateTpDenuncia() throws Exception
     {
         String json = "{\"tipoDenuncia\":\"Denúncia Atualizada\"}";
         TipoDenunciaDTO denuncia = new TipoDenunciaDTO();
@@ -137,7 +137,7 @@ public class TipoDenunciaControllerTest
     }
 
     @Test
-    public void testUpdateTpDenuncia_NotFound() throws Exception 
+    void testUpdateTpDenuncia_NotFound() throws Exception
     {
         doThrow(new RegistroInexistente("Tipo de denúncia não encontrado"))
                 .when(tipoDenunciaService).atualizarTipoDenuncia(1L, "Nova Denúncia");
@@ -149,7 +149,7 @@ public class TipoDenunciaControllerTest
     }
 
     @Test
-    public void testDeleteTpDenuncia() throws Exception 
+    void testDeleteTpDenuncia() throws Exception
     {
         doNothing().when(tipoDenunciaService).deletarTipoDenuncia(1L);
 
@@ -161,7 +161,7 @@ public class TipoDenunciaControllerTest
     }
 
     @Test
-    public void testDeleteTpDenuncia_NotFound() throws Exception 
+    void testDeleteTpDenuncia_NotFound() throws Exception
     {
         doThrow(new RegistroInexistente("Tipo de denúncia não encontrado"))
                 .when(tipoDenunciaService).deletarTipoDenuncia(1L);
