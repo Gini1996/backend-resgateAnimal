@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import br.com.jhowsoftware.resgateanimal.services.RabbitMQService;
+import br.com.jhowsoftware.resgateanimal.utils.RabbitMQConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,9 @@ public class TipoDenunciaController extends ControllerUtils
 	@Autowired
 	private TipoDenunciaService tipoDenunciaService;
 
+	@Autowired
+	private RabbitMQService rabbitMQService;
+
 	@GetMapping
 	public ResponseEntity<ResponseAPI<List<TipoDenunciaDTO>>> findAll()
 	{
@@ -47,6 +52,7 @@ public class TipoDenunciaController extends ControllerUtils
 	public ResponseEntity<ResponseAPI<TipoDenunciaDTO>> addTpDenuncia(@Valid @RequestBody TipoDenunciaDTO body)
 	{
 		TipoDenunciaDTO result  = tipoDenunciaService.adicionarTipoDenuncia(body.getTipoDenuncia());
+		this.rabbitMQService.enviarMensagem(RabbitMQConstants.FILA_TIPO_DENUNCIA,result);
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseSucesso("201",result,null));
 	}
 	
@@ -54,6 +60,7 @@ public class TipoDenunciaController extends ControllerUtils
     public ResponseEntity<ResponseAPI<TipoDenunciaDTO>> updateTpDenuncia(@PathVariable Long id, @Valid @RequestBody TipoDenunciaDTO body) 
 	{
 		TipoDenunciaDTO result = tipoDenunciaService.atualizarTipoDenuncia(id, body.getTipoDenuncia());
+		this.rabbitMQService.enviarMensagem(RabbitMQConstants.FILA_TIPO_DENUNCIA,result);
 		return ResponseEntity.status(HttpStatus.OK).body(responseSucesso("200",result,null));
     }
 	
