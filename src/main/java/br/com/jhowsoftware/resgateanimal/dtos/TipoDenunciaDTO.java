@@ -10,11 +10,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TipoDenunciaDTO 
+public class TipoDenunciaDTO implements Serializable
 {
 	private Long idTipoDenuncia;
 	
