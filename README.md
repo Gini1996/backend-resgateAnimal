@@ -18,6 +18,11 @@ Para acessar os modelos basta seguir até a pasta **resources/static/diagram**.
 > + Possuir  o [JDK 17](https://download.oracle.com/java/17/latest/jdk-17_windows-x64_bin.exe) instalado.
 > + É necessario possuir uma [IDE Java](https://spring.io/tools) de sua preferência. 
 > + Ter um banco de dados [PostgreSQL](https://www.postgresql.org/download/) instalado em sua máquina e devidamente configurado no properties do projeto.
+> + Subir uma imagem do RabbitMQ via Docker e realizar a configuração dentro do application.properties no projeto.
+
+## Opcionais
+> [!NOTE]
+> + Instalar o SonarQube localmente e configurar dentro do sonar-project.properties, sendo possível utilizar sem configurações com o plugin SonarLint pela IDE IntelliJ.
 
 ## Etapas do Projeto
 - [x] Estruturação do projeto com banco de dados Postgres
@@ -28,8 +33,9 @@ Para acessar os modelos basta seguir até a pasta **resources/static/diagram**.
 - [x] Implementação dos Repositories
 - [x] Estruturação dos Services
 - [x] Estruturação dos Controllers
-- [ ] Implementação dos metodos dos Services
-- [ ] Implementação dos metodos dos Controllers
+- [ ] Implementação dos metodos dos Services (Status: Parcial)
+- [ ] Implementação dos metodos dos Controllers (Status: Parcial)
+- [x] Implementação do serviço de Mensageria - RabbitMQ
 - [ ] Testes das APIs via Postman
 - [ ] Implementação de testes unitários utilizando JUnit e Mockito
 - [ ] Implementação de CORS e Security
