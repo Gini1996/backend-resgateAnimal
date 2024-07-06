@@ -22,20 +22,20 @@ Para acessar os modelos basta seguir até a pasta **resources/static/diagram**.
 
 ## Opcionais
 > [!NOTE]
-> + Instalar o SonarQube localmente e configurar dentro do sonar-project.properties, sendo possível utilizar sem configurações com o plugin SonarLint pela IDE IntelliJ.
+> + Instalar o SonarQube localmente e configurar dentro do sonar-project.properties, sendo possível utilizar sem configurações com o plugin SonarLint pela IDE IntelliJ. 
 
 ## Etapas do Projeto
-- [x] Estruturação do projeto com banco de dados Postgres
-- [x] Inclusao dos diagramas do projeto
-- [x] Configuração e desenvolvimento dos scripts iniciais do projeto
-- [x] Implementação do SonarQube
-- [x] Implementação das Entities
-- [x] Implementação dos Repositories
-- [x] Estruturação dos Services
-- [x] Estruturação dos Controllers
-- [ ] Implementação dos metodos dos Services (Status: Parcial)
-- [ ] Implementação dos metodos dos Controllers (Status: Parcial)
-- [x] Implementação do serviço de Mensageria - RabbitMQ
-- [ ] Testes das APIs via Postman
-- [ ] Implementação de testes unitários utilizando JUnit e Mockito
-- [ ] Implementação de CORS e Security
+ - ✅ Estruturação do projeto com banco de dados Postgres
+ - ✅ Inclusao dos diagramas do projeto
+ - ✅ Configuração e desenvolvimento dos scripts iniciais do projeto
+ - ✅ Implementação do SonarQube
+ - ✅ Implementação das Entities
+ - ✅ Implementação dos Repositories
+ - ✅ Estruturação dos Services
+ - ✅ Estruturação dos Controllers
+ - 🚧 Implementação dos metodos dos Services 
+ - 🚧 Implementação dos metodos dos Controllers 
+ - ✅ Implementação do serviço de Mensageria - RabbitMQ
+ - 🚧 Testes das APIs via Postman
+ - 🚧 Implementação de testes unitários utilizando JUnit e Mockito
+ - 📋 Implementação de CORS e Security
