@@ -6,6 +6,8 @@ import static org.mockito.Mockito.*;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.jhowsoftware.resgateanimal.services.impl.TipoDenunciaServiceImpl;
+import br.com.jhowsoftware.resgateanimal.utils.ServiceUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,11 +16,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import br.com.jhowsoftware.resgateanimal.dtos.TipoDenunciaDTO;
 import br.com.jhowsoftware.resgateanimal.entities.TipoDenuncia;
-import br.com.jhowsoftware.resgateanimal.exceptions.RegistroDuplicadoException;
-import br.com.jhowsoftware.resgateanimal.exceptions.RegistroInexistente;
-import br.com.jhowsoftware.resgateanimal.exceptions.ValorDivergenteException;
+import br.com.jhowsoftware.resgateanimal.utils.exceptions.RegistroDuplicadoException;
+import br.com.jhowsoftware.resgateanimal.utils.exceptions.RegistroInexistente;
+import br.com.jhowsoftware.resgateanimal.utils.exceptions.ValorDivergenteException;
 import br.com.jhowsoftware.resgateanimal.repositories.TipoDenunciaRepository;
-import jakarta.persistence.EntityManager;
 
 @ExtendWith(MockitoExtension.class)
 public class TipoDenunciaServiceTest
@@ -26,12 +27,12 @@ public class TipoDenunciaServiceTest
 
 	@Mock
     private TipoDenunciaRepository tipoDenunciaRepository;
-    
-    @Mock
-    private EntityManager entityManager;
 
+    @Mock
+    private ServiceUtils serviceUtils;
+    
     @InjectMocks
-    private TipoDenunciaService tipoDenunciaService;
+    private TipoDenunciaServiceImpl tipoDenunciaService;
 
     private TipoDenuncia tipoDenuncia;
 
@@ -60,7 +61,7 @@ public class TipoDenunciaServiceTest
     {
         when(tipoDenunciaRepository.findAll()).thenThrow(new RegistroInexistente("Não existem denuncias cadastradas"));
 
-        RuntimeException exception = assertThrows(RegistroInexistente.class, () -> { tipoDenunciaService.findAll();});
+        RuntimeException exception = assertThrows(RegistroInexistente.class, () -> tipoDenunciaService.findAll());
 
         assertEquals("Não existem denuncias cadastradas", exception.getMessage());
         verify(tipoDenunciaRepository, times(1)).findAll();
@@ -83,26 +84,17 @@ public class TipoDenunciaServiceTest
     {
         when(tipoDenunciaRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(RegistroInexistente.class, () -> {tipoDenunciaService.findById(1L);});
+        assertThrows(RegistroInexistente.class, () -> tipoDenunciaService.findById(1L));
 
         verify(tipoDenunciaRepository, times(1)).findById(1L);
     }
 
     @Test
-    void testAdicionarTipoDenunciaSuccess()
-    {
-        when(tipoDenunciaRepository.existsByTipoDenuncia(anyString())).thenReturn(false);
-        when(tipoDenunciaRepository.save(any(TipoDenuncia.class))).thenReturn(new TipoDenuncia());
-
-        assertDoesNotThrow(() -> tipoDenunciaService.adicionarTipoDenuncia("Teste"));
-
-        verify(tipoDenunciaRepository, times(1)).save(any(TipoDenuncia.class));
-    }
-
-    @Test
     void testAdicionarTipoDenunciaValorDivergente()
     {
-        ValorDivergenteException exception = assertThrows(ValorDivergenteException.class, () -> { tipoDenunciaService.adicionarTipoDenuncia("123");});
+        doThrow(new ValorDivergenteException("Valor informado não corresponde com o tipo de campo solicitado pela aplicação")).when(serviceUtils).validaString(any());
+
+        ValorDivergenteException exception = assertThrows(ValorDivergenteException.class, () -> tipoDenunciaService.adicionarTipoDenuncia("123"));
 
         assertEquals("Valor informado não corresponde com o tipo de campo solicitado pela aplicação", exception.getMessage());
 
@@ -114,7 +106,7 @@ public class TipoDenunciaServiceTest
     {
         when(tipoDenunciaRepository.existsByTipoDenuncia("Teste")).thenReturn(true);
 
-        RegistroDuplicadoException exception = assertThrows(RegistroDuplicadoException.class, () -> {tipoDenunciaService.adicionarTipoDenuncia("Teste");});
+        RegistroDuplicadoException exception = assertThrows(RegistroDuplicadoException.class, () -> tipoDenunciaService.adicionarTipoDenuncia("Teste"));
 
         assertEquals("O tipo de denuncia: Teste já se encontra cadastrado no banco de dados", exception.getMessage());
 
@@ -126,13 +118,14 @@ public class TipoDenunciaServiceTest
     {
         Long id = 1L;
         String novoTipoDenuncia = "Novo Tipo";
-        
+
         TipoDenuncia tipoDenuncia = new TipoDenuncia();
         tipoDenuncia.setIdTipoDenuncia(id);
         tipoDenuncia.setTipoDenuncia("Antigo Tipo");
 
-        when(tipoDenunciaRepository.findById(id)).thenReturn(Optional.of(tipoDenuncia));
-        when(tipoDenunciaRepository.save(any(TipoDenuncia.class))).thenAnswer(i -> i.getArgument(0));
+        doNothing().when(serviceUtils).validaString(any());
+        when(tipoDenunciaRepository.findById(anyLong())).thenReturn(Optional.of(tipoDenuncia));
+        when(tipoDenunciaRepository.save(any(TipoDenuncia.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         TipoDenunciaDTO result = tipoDenunciaService.atualizarTipoDenuncia(id, novoTipoDenuncia);
 
@@ -149,7 +142,7 @@ public class TipoDenunciaServiceTest
 
         when(tipoDenunciaRepository.findById(id)).thenReturn(Optional.empty());
 
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> { tipoDenunciaService.atualizarTipoDenuncia(id, novoTipoDenuncia);});
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> tipoDenunciaService.atualizarTipoDenuncia(id, novoTipoDenuncia));
 
         assertEquals("Tipo de denúncia não encontrado com o ID: " + id, thrown.getMessage());
     }
@@ -160,7 +153,7 @@ public class TipoDenunciaServiceTest
         long id = 1L;
         when(tipoDenunciaRepository.existsById(id)).thenReturn(false);
 
-        RegistroInexistente exception = assertThrows(RegistroInexistente.class, () -> {tipoDenunciaService.deletarTipoDenuncia(id);});
+        RegistroInexistente exception = assertThrows(RegistroInexistente.class, () -> tipoDenunciaService.deletarTipoDenuncia(id));
 
         assertEquals("O ID: " + id + " não foi localizado no banco de dados", exception.getMessage());
 

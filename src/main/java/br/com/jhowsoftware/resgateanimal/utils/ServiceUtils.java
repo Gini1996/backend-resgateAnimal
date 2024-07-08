@@ -2,11 +2,13 @@ package br.com.jhowsoftware.resgateanimal.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
-import br.com.jhowsoftware.resgateanimal.exceptions.ValorDivergenteException;
+import br.com.jhowsoftware.resgateanimal.utils.exceptions.ValorDivergenteException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ServiceUtils 
 {
 	public void validaString(String body)

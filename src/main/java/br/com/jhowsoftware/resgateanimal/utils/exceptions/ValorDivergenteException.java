@@ -1,4 +1,4 @@
-package br.com.jhowsoftware.resgateanimal.exceptions;
+package br.com.jhowsoftware.resgateanimal.utils.exceptions;
 
 public class ValorDivergenteException extends RuntimeException 
 {

@@ -1,4 +1,4 @@
-package br.com.jhowsoftware.resgateanimal.exceptions;
+package br.com.jhowsoftware.resgateanimal.utils.exceptions;
 
 import java.io.Serializable;
 import lombok.Getter;
