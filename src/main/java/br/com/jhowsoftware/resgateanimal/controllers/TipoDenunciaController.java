@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import br.com.jhowsoftware.resgateanimal.services.RabbitMQService;
+import br.com.jhowsoftware.resgateanimal.services.TipoDenunciaService;
 import br.com.jhowsoftware.resgateanimal.utils.RabbitMQConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.jhowsoftware.resgateanimal.dtos.TipoDenunciaDTO;
-import br.com.jhowsoftware.resgateanimal.services.TipoDenunciaService;
 import br.com.jhowsoftware.resgateanimal.utils.ControllerUtils;
 
 @RestController

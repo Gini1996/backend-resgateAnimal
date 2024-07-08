@@ -1,5 +1,6 @@
 package br.com.jhowsoftware.resgateanimal.dtos;
 
+import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import br.com.jhowsoftware.resgateanimal.entities.Porte;
@@ -7,10 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+import java.io.Serializable;
+
+@Data
 @NoArgsConstructor
-public class PorteDTO 
+public class PorteDTO implements Serializable
 {
 	private Long idPorte;
 	private String porte;

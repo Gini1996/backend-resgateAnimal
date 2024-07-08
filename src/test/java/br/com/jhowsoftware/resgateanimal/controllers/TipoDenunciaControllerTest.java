@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.jhowsoftware.resgateanimal.services.impl.RabbitMQServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,9 +26,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import br.com.jhowsoftware.resgateanimal.dtos.TipoDenunciaDTO;
-import br.com.jhowsoftware.resgateanimal.exceptions.RegistroDuplicadoException;
-import br.com.jhowsoftware.resgateanimal.exceptions.RegistroInexistente;
-import br.com.jhowsoftware.resgateanimal.services.TipoDenunciaService;
+import br.com.jhowsoftware.resgateanimal.utils.exceptions.RegistroDuplicadoException;
+import br.com.jhowsoftware.resgateanimal.utils.exceptions.RegistroInexistente;
+import br.com.jhowsoftware.resgateanimal.services.impl.TipoDenunciaServiceImpl;
 
 @WebMvcTest(TipoDenunciaController.class)
 class TipoDenunciaControllerTest
@@ -37,7 +38,10 @@ class TipoDenunciaControllerTest
     private MockMvc mockMvc;
 
     @MockBean
-    private TipoDenunciaService tipoDenunciaService;
+    private TipoDenunciaServiceImpl tipoDenunciaService;
+
+    @MockBean
+    private RabbitMQServiceImpl rabbitMQService;
 
     @InjectMocks
     private TipoDenunciaController tipoDenunciaController;

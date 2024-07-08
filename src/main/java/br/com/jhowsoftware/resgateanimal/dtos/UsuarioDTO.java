@@ -1,7 +1,9 @@
 package br.com.jhowsoftware.resgateanimal.dtos;
 
+import java.io.Serializable;
 import java.util.Date;
 
+import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import br.com.jhowsoftware.resgateanimal.entities.Usuario;
@@ -9,10 +11,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-public class UsuarioDTO 
+public class UsuarioDTO implements Serializable
 {
 	private Long idUsuario;
 	private String usuario;

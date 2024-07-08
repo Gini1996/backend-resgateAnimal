@@ -1,5 +1,6 @@
 package br.com.jhowsoftware.resgateanimal.dtos;
 
+import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import br.com.jhowsoftware.resgateanimal.entities.Denuncia;
@@ -7,10 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+import java.io.Serializable;
+
+@Data
 @NoArgsConstructor
-public class DenunciaDTO 
+public class DenunciaDTO implements Serializable
 {
 	private Long idDenuncia;
 	private String cep;
