@@ -2,6 +2,7 @@ package br.com.jhowsoftware.resgateanimal.dtos;
 
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class TipoDenunciaDTO implements Serializable
 {
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private Long idTipoDenuncia;
 	
 	@NotBlank(message = "Tipo de denúncia não pode estar em branco")
