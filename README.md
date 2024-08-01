@@ -29,6 +29,7 @@ Para acessar os modelos basta seguir até a pasta **resources/static/diagram**.
  - ✅ Inclusao dos diagramas do projeto
  - ✅ Configuração e desenvolvimento dos scripts iniciais do projeto
  - ✅ Implementação do SonarQube
+ - ✅ Implementação de Observabilidade(Grafana/Prometheus)
  - ✅ Implementação das Entities
  - ✅ Implementação dos Repositories
  - ✅ Estruturação dos Services
