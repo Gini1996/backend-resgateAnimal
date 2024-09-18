@@ -11,6 +11,6 @@ public class RabbitMQConsumer
     @RabbitListener(queues = RabbitMQConstants.FILA_TIPO_DENUNCIA, containerFactory = "rabbitListenerContainerFactory")
     public void consumirTipoDenuncia(TipoDenunciaDTO tipoDenuncia)
     {
-        System.out.println("Mensagem recebida do RabbitMQ: A requisicao do Tipo Denuncia " + tipoDenuncia.getTipoDenuncia() + " ID: "+ tipoDenuncia.getIdTipoDenuncia() + " foi consumido com sucesso!");
+       System.out.println("Mensagem recebida do RabbitMQ: A requisicao do Tipo Denuncia " + tipoDenuncia.getTipoDenuncia() + " ID: "+ tipoDenuncia.getIdTipoDenuncia() + " foi consumido com sucesso!");
     }
 }

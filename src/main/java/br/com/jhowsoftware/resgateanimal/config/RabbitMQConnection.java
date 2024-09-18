@@ -2,17 +2,19 @@ package br.com.jhowsoftware.resgateanimal.config;
 
 import br.com.jhowsoftware.resgateanimal.utils.RabbitMQConstants;
 import jakarta.annotation.PostConstruct;
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.config.DirectRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.ConditionalRejectingErrorHandler;
+import org.springframework.amqp.rabbit.support.ListenerExecutionFailedException;
+import org.springframework.amqp.support.converter.MessageConversionException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.util.ErrorHandler;
 
 @Component
 @Configuration
@@ -101,10 +103,22 @@ public class RabbitMQConnection
     }
 
     @Bean
+    public DirectRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
+        DirectRabbitListenerContainerFactory factory = new DirectRabbitListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        factory.setPrefetchCount(100);
+        factory.setMessageConverter(new Jackson2JsonMessageConverter());
+
+        return factory;
+    }
+
+    @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory)
     {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setMessageConverter(jsonMessageConverter());
         return template;
     }
+
 }
