@@ -13,6 +13,13 @@ public class RabbitMQServiceImpl implements RabbitMQService
 
     public void enviarMensagem(String nomeFila, Object mensagem)
     {
-        this.rabbitTemplate.convertAndSend(nomeFila,mensagem);
+        try
+        {
+            this.rabbitTemplate.convertAndSend(nomeFila,mensagem);
+        }
+        catch (Exception e)
+        {
+            System.err.println("Erro ao enviar a mensagem: " + e.getMessage());
+        }
     }
 }
