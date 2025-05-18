@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,8 @@ import br.com.jhowsoftware.resgateanimal.utils.ControllerUtils;
 @Tag(name = "Tipos de Denúncia", description = "Endpoints para gerenciar tipos de denúncia")
 public class TipoDenunciaController extends ControllerUtils
 {
+	private static final Logger LOG_TECNICO = LoggerFactory.getLogger(TipoDenunciaController.class);
+
 	@Autowired
 	private TipoDenunciaService tipoDenunciaService;
 
@@ -37,6 +41,7 @@ public class TipoDenunciaController extends ControllerUtils
 	@GetMapping
 	public ResponseEntity<ResponseAPI<List<TipoDenunciaDTO>>> findAll()
 	{
+		LOG_TECNICO.info("Buscando todos os tipos de denúncia");
 		List<TipoDenunciaDTO> denuncias =  tipoDenunciaService.findAll();
 		return denuncias != null ? 
 				ResponseEntity.ok(responseSucesso("200",denuncias,null)): 
@@ -50,6 +55,7 @@ public class TipoDenunciaController extends ControllerUtils
 	@GetMapping(value = "/{id}")
     public ResponseEntity<ResponseAPI<TipoDenunciaDTO>> findById(@PathVariable Long id)
 	{
+		LOG_TECNICO.info("Buscando tipo de denúncia com ID: {} ", id);
         TipoDenunciaDTO result = tipoDenunciaService.findById(id);
         return result != null ?
 				ResponseEntity.ok(responseSucesso("200",result,null)):
@@ -63,8 +69,13 @@ public class TipoDenunciaController extends ControllerUtils
 	@PostMapping("/addTpDenuncia")
 	public ResponseEntity<ResponseAPI<TipoDenunciaDTO>> addTpDenuncia(@Valid @RequestBody TipoDenunciaDTO body)
 	{
+		LOG_TECNICO.info("Adicionando novo tipo de denúncia");
 		TipoDenunciaDTO result  = tipoDenunciaService.adicionarTipoDenuncia(body.getTipoDenuncia());
+
+		LOG_TECNICO.info("Enviando mensagem de adição de denúncia para a fila de tipo de denúncia");
 		this.rabbitMQService.enviarMensagem(RabbitMQConstants.FILA_TIPO_DENUNCIA,result);
+		LOG_TECNICO.info("Tipo de denúncia adicionado com sucesso");
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseSucesso("201",result,null));
 	}
 
@@ -75,8 +86,13 @@ public class TipoDenunciaController extends ControllerUtils
 	@PutMapping("/attTpDenuncia/{id}")
     public ResponseEntity<ResponseAPI<TipoDenunciaDTO>> updateTpDenuncia(@PathVariable Long id, @Valid @RequestBody TipoDenunciaDTO body) 
 	{
+		LOG_TECNICO.info("Atualizando tipo de denúncia com ID: {} ", id);
 		TipoDenunciaDTO result = tipoDenunciaService.atualizarTipoDenuncia(id, body.getTipoDenuncia());
+
+		LOG_TECNICO.info("Enviando mensagem de atualização para a fila de tipo de denúncia");
 		this.rabbitMQService.enviarMensagem(RabbitMQConstants.FILA_TIPO_DENUNCIA,result);
+		LOG_TECNICO.info("Tipo de denúncia atualizado com sucesso");
+
 		return ResponseEntity.status(HttpStatus.OK).body(responseSucesso("200",result,null));
     }
 
@@ -87,7 +103,10 @@ public class TipoDenunciaController extends ControllerUtils
 	@DeleteMapping("excluir/{id}")
 	public ResponseEntity<ResponseAPI<Object>> deleteTpDenuncia(@PathVariable Long id)
 	{
+		LOG_TECNICO.info("Deletando tipo de denúncia com ID: {} ", id);
 		tipoDenunciaService.deletarTipoDenuncia(id);
+		LOG_TECNICO.info("Tipo de denúncia com ID: {} deletado com sucesso", id);
+
 		return ResponseEntity.status(HttpStatus.OK).body(responseSucesso("200",null,"Denuncia ID: " + id + " excluída com sucesso"));
 	}
 }
