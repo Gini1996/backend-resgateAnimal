@@ -12,11 +12,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "TipoUsuario")
+@Table(name = "tipo_usuario")
 public class TipoUsuario 
 {
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_tipo_usuario")
 	private Long idTipoUsuario;
 	
 	@Column(columnDefinition = "TEXT")

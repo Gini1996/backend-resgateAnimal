@@ -1,13 +1,13 @@
 CREATE TABLE IF NOT EXISTS tipo_usuario
 ( 
-	id_tipo_usuario INTEGER,
+	id_tipo_usuario SERIAL,
 	tipo_usuario VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id_tipo_usuario)
 );
 
 CREATE TABLE IF NOT EXISTS usuario
 ( 
-	id_usuario INTEGER,
+	id_usuario SERIAL,
 	usuario VARCHAR(255) NOT NULL,
 	senha VARCHAR(255) NOT NULL,
 	nome VARCHAR(255),
@@ -29,42 +29,42 @@ CREATE TABLE IF NOT EXISTS tipo_denuncia
 
 CREATE TABLE IF NOT EXISTS tipo_animal
 ( 
-	id_tipo_animal INTEGER,
+	id_tipo_animal SERIAL,
 	tipo_animal VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id_tipo_animal)
 );
 
 CREATE TABLE IF NOT EXISTS condicao
 ( 
-	id_condicao INTEGER,
+	id_condicao SERIAL,
 	condicao VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id_condicao)
 );
 
 CREATE TABLE IF NOT EXISTS porte
 ( 
-	id_porte INTEGER,
+	id_porte SERIAL,
 	porte VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id_porte)
 );
 
 CREATE TABLE IF NOT EXISTS pelo
 ( 
-	id_pelo INTEGER,
+	id_pelo SERIAL,
 	pelo VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id_pelo)
 );
 
 CREATE TABLE IF NOT EXISTS coloracao
 ( 
-	id_coloracao INTEGER,
+	id_coloracao SERIAL,
 	coloracao VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id_coloracao)
 );
 
 CREATE TABLE IF NOT EXISTS denuncia
 ( 
-	id_denuncia INTEGER,
+	id_denuncia SERIAL,
 	cep VARCHAR(20) NOT NULL,
 	descricao VARCHAR(1000) NOT NULL,
 	endereco VARCHAR(255),
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS denuncia
 
 CREATE TABLE IF NOT EXISTS resgate
 ( 
-	id_resgate INTEGER,
+	id_resgate SERIAL,
 	descricao VARCHAR(1000) NOT NULL,
 	id_usuario INTEGER,
 	id_denuncia INTEGER,

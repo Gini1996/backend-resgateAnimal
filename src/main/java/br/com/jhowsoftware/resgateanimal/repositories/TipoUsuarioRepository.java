@@ -6,5 +6,5 @@ import br.com.jhowsoftware.resgateanimal.entities.TipoUsuario;
 
 public interface TipoUsuarioRepository extends JpaRepository<TipoUsuario, Long>
 {
-
+    boolean existsByTipoUsuario(String tipoUsuario);
 }
