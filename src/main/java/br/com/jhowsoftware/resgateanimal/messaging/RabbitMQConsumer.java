@@ -1,6 +1,7 @@
 package br.com.jhowsoftware.resgateanimal.messaging;
 
 import br.com.jhowsoftware.resgateanimal.dtos.TipoDenunciaDTO;
+import br.com.jhowsoftware.resgateanimal.dtos.TipoUsuarioDTO;
 import br.com.jhowsoftware.resgateanimal.utils.RabbitMQConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,5 +17,11 @@ public class RabbitMQConsumer
     public void consumirTipoDenuncia(TipoDenunciaDTO tipoDenuncia)
     {
         LOG_TECNICO.info("Mensagem recebida do RabbitMQ: A requisicao do Tipo Denuncia {} ID:{} foi consumido com sucesso!", tipoDenuncia.getTipoDenuncia(), tipoDenuncia.getIdTipoDenuncia());
+    }
+
+    @RabbitListener(queues = RabbitMQConstants.FILA_TIPO_USUARIO, containerFactory = "rabbitListenerContainerFactory")
+    public void consumirTipoUsuario(TipoUsuarioDTO tipoUsuario)
+    {
+        LOG_TECNICO.info("Mensagem recebida do RabbitMQ: A requisicao do Tipo Usuario {} ID:{} foi consumido com sucesso!", tipoUsuario.getTipoUsuario(), tipoUsuario.getIdTipoUsuario());
     }
 }
